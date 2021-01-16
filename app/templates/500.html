@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block title %}Internal Server Error{% endblock %}
+
+{% block content %}
+<link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet" type="text/css">
+<link href="https://fonts.googleapis.com/css?family=Nunito:400,700" rel="stylesheet">
+
+<!-- <div class="page-header">
+    <h1>Internal Server Error</h1>
+    <p>The administrator has been notified. Sorry for the inconvenience!</p>
+    <p><a href="{{ url_for('index') }}">Back</a></p>
+</div> -->
+
+<body>
+
+    <div id="notfound">
+        <div class="notfound">
+            <div class="notfound-404"></div>
+            <h1>500</h1>
+            <h2>Oops! Internal Server Error</h2>
+            <h4>The administrator has been notified. Sorry for the inconvenience!</h4>
+            <a href="{{ url_for('.index') }}">Back to homepage</a>
+        </div>
+    </div>
+
+</body>
+{% endblock %}

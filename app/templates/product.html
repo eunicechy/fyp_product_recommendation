@@ -1,0 +1,201 @@
+{% extends 'index.html' %}
+
+<link
+  href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+  rel="stylesheet">
+<link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+<link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet" type="text/css">
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script type='text/javascript' src='http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js'></script>
+<script type='text/javascript' src='js/jquery.ba-hashchange.min.js'></script>
+<script type='text/javascript' src='js/dynamicpage.js'></script>
+
+{% block page_content %}
+{% import "_macros.html" as macros %}
+<div class="top-pad">
+  <h2>Product Details</h2>
+  <div class="well text-center">
+    <img src="{{ product.image_url }}" width="400" height="300">
+    <h3>
+      {{ product.product_name }}
+    </h3>
+    <p><i><b> {{product.brands}}</b></i></p>
+    <p><b>Price: </b>RM {{ product.price }}0</p>
+    {% set rating = product.overall_rating %}
+    {% if rating is not none %}
+    <p><b>Rating: </b>{{ rating }} / 5</p>
+    <p><b>Sentiment Score: </b>{{ product.overall_sentiment }} /5</p>
+    {% else %}
+    <p><b>Rating: </b>0 / 5</p>
+    {% endif %}
+    <centre>
+      <a class="btn btn-primary" data-toggle="tooltip" data-placement="top" id="hints"
+        title='Product recommendations based on sentiment scores of all user reviews'
+        href="{{ url_for('.ur_recommendations', product_name=product.product_name) }}">
+        Users Review Recommendations
+      </a>
+      <a class="btn btn-default" data-toggle="tooltip" data-placement="top" id="hints"
+        title='Product recommendations based on ratings of the products'
+        href="{{ url_for('.rating_recommendations', product_name=product.product_name) }}">
+        Ratings based Recommendations
+      </a>
+    </centre>
+  </div>
+
+  <div class="container">
+    {% if hasReview == True %}
+    <div class="row">
+      <div class="col-sm-3 text-center">
+        <div class="rating-block">
+          <h4>Average Sentiment Score</h4>
+          <h1 class="rating-num">
+            {{ product.overall_sentiment }}<small>/ 5</small></h1>
+          <div class="rating">
+            <!-- TODO: if got hasReview is true, then show, else, make it appear to have all empty star -->
+            {% set n = product.overall_sentiment %}
+            {% if n is not none %}
+            {% for i in range(n) %}
+            <span class="glyphicon glyphicon-star"></span>
+            {% endfor %}
+            {% for i in range(5-n) %}
+            </span><span class="glyphicon glyphicon-star-empty"></span>
+            {% endfor %}
+            {% else %}
+            {% for i in range(5) %}
+            <span class="glyphicon glyphicon-star-empty"></span>
+            {% endfor %}
+            {% endif %}
+          </div>
+          <div>
+            <span class="glyphicon glyphicon-user"></span> {{ num_reviews }} total reviews
+          </div>
+        </div>
+      </div>
+
+      <div class="col-sm-3">
+        <h4>Sentiment Score breakdown</h4>
+        {% for i in range(0,5)|reverse %}
+        <div class="pull-left">
+          <div class="pull-left" style="width:35px; line-height:1;">
+            {% set current_rating = i+1 %}
+            <div style="height:9px; margin:5px 0;">{{ current_rating }} <span class="glyphicon glyphicon-star"></span>
+            </div>
+          </div>
+          <div class="pull-left" style="width:180px;">
+            <div class="progress" style="height:9px; margin:8px 0;">
+              {% set portion= (reviews_rating[i]|length/num_reviews) * 5 %}
+
+              {% if portion>4 and portion<=5 %}
+              {% set style="width: 1000%" %}
+              {% elif portion>3 and portion<=4 %}
+              {% set style="width: 80%" %}
+              {% elif portion>2 and portion<=3 %}
+              {% set style="width: 60%" %}
+              {% elif portion>1 and portion<=2 %}
+              {% set style="width: 40%" %}
+              {% elif portion >0 and portion<=1 %}
+              {% set style="width: 20%" %}
+              {% endif %}
+
+              <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="{{ i+1 }}"
+                aria-valuemin="0" aria-valuemax="5" style="{{ style }}">
+                <span class="sr-only">80% Complete (danger)</span>
+              </div>
+            </div>
+          </div>
+          <div class="pull-right" style="margin-left:10px;">{{ reviews_rating[i]|length }}</div>
+        </div>
+        {% endfor %}
+
+      </div>
+      <div class="col-sm-4 text-center">
+        <h4>Keywords from all reviews</h4>
+        <p><small><i>[Click each keywords to filter]</i></small></p>
+        <div class="tags">
+          {% set k = 1 %}
+          {% for k in range(5) %}
+          <a href="{{ url_for('.product_review_filter', product_name=product.product_name, keyword= keywords[k]) }}"
+            class="btn-warning">{{ keywords[k] }}</a>
+          {% endfor %}
+
+        </div>
+        <p>
+          <a href="{{ url_for('.product', product_name=product.product_name) }}"><small><i>Clear filter</i></small></a>
+        </p>
+      </div>
+    </div>
+    {% endif %}
+
+    <!-- <div id="page_wrap">
+      <section id="main-content">
+        <div id="guts"> -->
+    <div class="row">
+      <div class="col-sm-7">
+        <hr />
+        {% if hasReview == True %}
+        <div class="review-block">
+          <!-- originally r in reviews -->
+          {% for r in reviews %}
+          <div class="row">
+            <div class="col-sm-3 text-center">
+              <img class="rounded-circle reviewer" src="http://standaloneinstaller.com/upload/avatar.png">
+              <!-- <img src="http://dummyimage.com/60x60/666/ffffff&text=No+Image" class="img-rounded"> -->
+              <div class="caption">
+                <small>by {{ r.username }}</small>
+              </div>
+              <div class="review-block-date "><small><b><i>Sentiment
+                      score:</i></b></small><br /><b>{{ r.sentiment_score }} /5</b></div>
+            </div>
+            <div class="col-sm-9">
+              <div class="review-block-rate">
+                {% set n = r.rating | int %}
+                {% for i in range(n) %}
+                <button type="button" class="btn btn-warning btn-xs" aria-label="Left Align">
+                  <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+                </button>
+                {% endfor %}
+                {% for i in range(5-n) %}
+                <button type="button" class="btn btn-default btn-grey btn-xs" aria-label="Left Align">
+                  <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+                </button>
+                {% endfor %}
+                {% if n == 0 %}
+                {% for i in range(5) %}
+                <button type="button" class="btn btn-default btn-grey btn-xs" aria-label="Left Align">
+                  <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+                </button>
+                {% endfor %}
+                {% endif %}
+              </div>
+              <!-- <div class="review-block-title">this was nice in buy</div> -->
+
+              <div class="review-block-description">{{ r.text }}
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+          <hr />
+        </div>
+        {% elif hasReview == False %}
+        <div class="col-sm-9 text-center">
+          No review and rating available yet.
+        </div>
+        {% endif %}
+      </div>
+    </div>
+    <!-- </div>
+      </section>
+    </div> -->
+    {% if isFilter == False %}
+    <div class="pagination">
+      {{macros.pagination_widget(pagination,'.product',product_name=product.product_name)}}
+    </div>
+    {% else %}
+    <div class="pagination">
+      {{macros.pagination_widget(pagination,'.product_review_filter',product_name=product.product_name, keyword=keyword)}}
+    </div>
+    {% endif %}
+
+    {% endblock %}

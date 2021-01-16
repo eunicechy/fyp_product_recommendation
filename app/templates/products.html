@@ -1,0 +1,49 @@
+{% extends 'index.html' %}
+{% block page_content %}
+{% import "_macros.html" as macros %}
+<div class="top-pad">
+  <h3 class="recommended-list-title"> {{title}}</h3>
+  {% for product in products %}
+  <div class="well">
+    <img src={{product.image_url}} width="200" height="100" />
+    <h3>
+      {{ product.product_name}}
+    </h3>
+    <p><i><b>{{ product.brand}}</b></i></p>
+    <p> RM {{ product.price}}0</p>
+    {% set overall_rating = product.overall_rating %}
+    {% if overall_rating is none %}
+    <p>Ratings: 0/5</p>
+    <p>Sentiment Score: 0/5</p>
+    {% else %}
+    <p> Ratings: {{ product.overall_rating}}/5</p>
+    <p> Sentiment Score: {{product.overall_sentiment }}/5</p>
+    {% endif %}
+    <div>
+      <a class="btn btn-success" href="{{ url_for('.product', product_name=product.product_name) }}">
+        View Product Details
+      </a>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+{% if pagiType == 1 %}
+<div class="pagination">
+  {{macros.pagination_widget(pagination,'.brand_list', brand_name = brand_name)}}
+</div>
+{%elif pagiType ==2  %}
+<div class="pagination">
+  {{macros.pagination_widget(pagination,'.getAllSkinCare')}}
+</div>
+{%elif pagiType ==3  %}
+<div class="pagination">
+  {{macros.pagination_widget(pagination,'.getAllMakeup')}}
+</div>
+{%elif pagiType == 4 %}
+<div class="pagination">
+  {{macros.pagination_widget(pagination,'.getProducts', search_input = search_input)}}
+</div>
+
+{%endif%}
+{% endblock %}

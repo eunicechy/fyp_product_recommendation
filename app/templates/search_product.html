@@ -1,0 +1,281 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %}Search product{% endblock %}
+
+{% block head %}
+{{ super() }}
+<link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+<link href="{{ url_for('static', filename='style.css') }}" rel=" stylesheet" type="text/css" />
+<link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+<link
+  href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+  rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='vendor/icofont/icofont.min.css') }}" type="text/css" />
+<link href="{{ url_for('static', filename='vendor/remixicon/remixicon.css') }}" rel="stylesheet">
+<link href="{{ url_for('static', filename='vendor/boxicons/css/boxicons.min.css') }}" rel="stylesheet">
+<link href="{{ url_for('static', filename='vendor/owl.carousel/assets/owl.carousel.min.css') }}" rel="stylesheet">
+<link href="{{ url_for('static', filename='vendor/venobox/venobox.css') }}" rel="stylesheet">
+<link href="{{ url_for('static', filename='vendor/aos/aos.css') }}" rel="stylesheet" />
+<link href="{{ url_for('static', filename='vendor/aos/aos.css') }}" rel=" stylesheet" type="text/css" />
+{% endblock %}
+
+{% block page_content %}
+
+<div class="row">
+
+  <section id="hero" class="d-flex align-items-center">
+
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-6 pt-5 pt-lg-0 order-2 order-lg-1 d-flex flex-column justify-content-center">
+          <h1>Find the product that you have been looking for</h1>
+          <h2>Our system can recommend you products based on how other users feels about the product!
+          </h2>
+          <div>
+            <a href="#get-started" class="btn-get-started">Try now</a>
+          </div>
+        </div>
+        <div class="col-lg-6 order-1 order-lg-2">
+          <img src="https://i.pinimg.com/originals/56/c9/d7/56c9d773a346db66c907d60cbc44d9d8.gif"
+            class="img-fluid animated" alt="">
+        </div>
+      </div>
+    </div>
+
+  </section><!-- End Hero -->
+  <!-- ======= Search form Section ======= -->
+  <section id="get-started" class="pricing">
+    <div class="container">
+      <div class="section-title">
+        <h2>Get started now!</h2>
+        <p>What products are you interested in?</p>
+      </div>
+      <div class="row text-center">
+        <div class="container text-center">
+          <div class="well text-center">
+            {{ wtf.quick_form(form) }}
+          </div>
+        </div>
+      </div>
+  </section><!-- End Search Section -->
+  <!-- newly added search here -->
+  {% if g.search_form %}
+  <form class="navbar-form navbar-left" method="get" action="{{ url_for('main.search') }}">
+    <div class="form-group">
+      {{ g.search_form.q(size=20, class='form-control',
+                            placeholder=g.search_form.q.label.text) }}
+    </div>
+  </form>
+  {% endif %}
+  <!-- ======= Services Section ======= -->
+  <section id="about" class="services">
+    <div class="container">
+
+      <div class="section-title">
+        <h2>Our System</h2>
+        <p>Why recommendation system is needed? </p>
+      </div>
+
+      <div class="row">
+        <div class="col-md-6 col-lg-3 d-flex align-items-stretch mb-5 mb-lg-0">
+          <div class="icon-box">
+            <div class="icon"><i class="bx bx-happy-heart-eyes"></i></div>
+            <h4 class="title"><a href="#about">Understanding the reviews</a></h4>
+            <p class="description">Our systems find out how users feel through users reviews!</p>
+          </div>
+        </div>
+
+        <div class="col-md-6 col-lg-3 d-flex align-items-stretch mb-5 mb-lg-0">
+          <div class="icon-box">
+            <div class="icon"><i class="bx bx-cool"></i></div>
+            <h4 class="title"><a href="#about">Save your time</a></h4>
+            <p class="description">You can easily view the generated keywords and save your time from reading!</p>
+          </div>
+        </div>
+
+        <div class="col-md-6 col-lg-3 d-flex align-items-stretch mb-5 mb-lg-0">
+          <div class="icon-box">
+            <div class="icon"><i class="bx bx-check-circle"></i></div>
+            <h4 class="title"><a href="#about">Recommend the right product</a></h4>
+            <p class="description">Our recommendations are based on the sentiment scores of the product review using
+              Matrix Factorisation model.</p>
+          </div>
+        </div>
+
+        <div class="col-md-6 col-lg-3 d-flex align-items-stretch mb-5 mb-lg-0">
+          <div class="icon-box">
+            <div class="icon"><i class="bx bx-copy-alt"></i></div>
+            <h4 class="title"><a href="#about">Analysis</a></h4>
+            <p class="description">Our system recommends product by using sentiment analysis.</p>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section><!-- End Services Section -->
+
+  <section id="ranking" class="services">
+    <div class="container">
+
+      <div class="section-title">
+        <h2>Top Recommended Products</h2>
+        <p>Find the top pick for your skin type</p>
+      </div>
+
+      <div class="row">
+        <a href="{{ url_for('.product', product_name='Klairs Midnight Blue Calming Cream 60ml') }}">
+          <div class="col-md-6 col-lg-3 d-flex align-items-stretch mb-5 mb-lg-0">
+            <div class="icon-box">
+              <!-- <div class="icon"><i class="bx bx-happy-heart-eyes"></i></div> -->
+              <h4 class="title">Top Product for Dry Skin</h4>
+              <img
+                src="https://cdn5.hermo.my/product_images/malls/33053_klairs-midnight-blue-calming-cream-60ml_440_280_1534411832.png"
+                width="200" height="100" />
+              <p class="description"><b><i>Klairs Midnight Blue Calming Cream</i></b></p>
+              <p class="description">Sentiment Ratings: <b>4/5</b></p>
+              <p class="description"><small><i>#very moisturing #suitable for dry skin.</i></small></p>
+              <!-- <p class="description">Our systems find out how users feel through users reviews!</p> -->
+            </div>
+          </div>
+        </a>
+
+        {% set product_name = "L'Oreal Paris Revitalift Crystal Micro Essence 65ml" %}
+        <a href="{{ url_for('.product', product_name=product_name) }}">
+          <div class="col-md-6 col-lg-3 d-flex align-items-stretch mb-5 mb-lg-0">
+            <div class="icon-box">
+              <h4 class="title">Top Product for Combination Skin</h4>
+              <img
+                src="https://www.tryandreview.com/uploads/images/products/a27f2d48b3bbf313ebd006ff4cee3f9b98c0f9c4.jpg?v50"
+                width="200" height="100" />
+              <p class="description"><b><i>L'Oreal Paris Revitalift Crystal Micro Essence 65ml</i></b></p>
+              <p class="description">Sentiment Ratings: <b>4/5</b></p>
+              <p></p>
+              <p class="description"><small><i>#refreshing and moisturizing #always repurchasing on sales</i></small>
+              </p>
+            </div>
+          </div>
+        </a>
+
+        <a href="{{ url_for('.product', product_name='Some By Mi AHA BHA PHA 30 Days Miracle Toner 150ml') }}">
+          <div class="col-md-6 col-lg-3 d-flex align-items-stretch mb-5 mb-lg-0">
+            <div class="icon-box">
+              <h4 class="title">Top Product for Oily Skin</h4>
+              <img
+                src="https://cdn5.hermo.my/product_images/malls/30958_some-by-mi-aha-bha-pha-30-days-miracle-toner-150ml_440_280_1529291204.png"
+                width="200" height="100" />
+              <p class="description"><b><i>Some By Mi AHA BHA PHA 30 Days Miracle Toner</i></b></p>
+              <p class="description">Sentiment Ratings: <b>4/5</b></p>
+              <p class="description"><small><i>#clear pores #reduce pimple</i></small></p>
+            </div>
+          </div>
+        </a>
+        <a href="{{ url_for('.product', product_name='Hada Labo Kouji Treatment Night Cream 50g') }}">
+          <div class="col-md-6 col-lg-3 d-flex align-items-stretch mb-5 mb-lg-0">
+            <div class="icon-box">
+              <h4 class="title">Top Product for Sensitive Skin</h4>
+              <img
+                src="https://cdn5.hermo.my/product_images/malls/40572_hada-labo-kouji-treatment-night-cream-50g_440_280_1556865308.png"
+                width="200" height="100" />
+              <p class="description"><b><i>Hada Labo Kouji Treatment Night Cream</i></b></p>
+              <p class="description">Sentiment Ratings: <b>4/5</b></p>
+              <p class="description"><small><i>#no irritation at all #works like miracle</i></small></p>
+            </div>
+          </div>
+        </a>
+
+      </div>
+
+    </div>
+  </section><!-- End Services Section -->
+
+  <!-- <section id="brands" class="services">
+    <div class="container text-center">
+
+      <div class="section-title">
+        <h2>Brands</h2>
+        <p>Our systems include brands from all these brands</p>
+      </div>
+
+      <img src="https://i.pinimg.com/originals/d0/44/e9/d044e9419b8f138e16a47362f60454b0.jpg" width="500"
+        height="340" />
+    </div>
+  </section> -->
+
+  <section id="brands" class="services">
+    <div class="container text-center">
+
+      <div class="section-title">
+        <h2>Featured Brands</h2>
+        <p>Our systems include brands from all these brands. <a href="{{ url_for('.getAllBrands') }}">Click here for
+            more brands</a></p>
+      </div>
+
+      <div class="row">
+        <div class="col-12 col-md-4 col-sm-6 d-flex align-items-stretch mb-5 mb-lg-0">
+          <div class="icon-box">
+            <!-- <div class="col-12 col-sm-6 col-md-4 image-grid-item"> -->
+            <div style="background-image: url(https://www.tofusecret.com/wp-content/uploads/2020/04/COSRX-logo.png);"
+              class="image-grid-cover">
+              <a href="{{ url_for('.brand_list', brand_name='Cosrx') }}" class="image-grid-clickbox"></a>
+              <a href="#" class="cover-wrapper"></a>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-md-4 col-sm-6 d-flex align-items-stretch mb-5 mb-lg-0">
+          <div class="icon-box">
+            <div
+              style="background-image: url(https://assets.digitalservices.ggp.com/content/dam/rw-2/images/tenant-images/tenant-logos/nature-republic-logo-553x260-v1.png);"
+              class="entry-cover image-grid-cover has-image">
+              {% set brand_name = "Nature Republic" %}
+              <a href="{{ url_for('.brand_list', brand_name=brand_name) }}" class="image-grid-clickbox"></a>
+              <a href="#" class="cover-wrapper"></a>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-md-4 col-sm-6 d-flex align-items-stretch mb-5 mb-lg-0">
+          <div class="icon-box">
+            <div style="background-image: url(https://wako.com.my/img/m/30.jpg);"
+              class="entry-cover image-grid-cover has-image">
+              {% set brand_name = "Pyunkang Yul" %}
+              <a href="{{ url_for('.brand_list', brand_name=brand_name) }}" class="image-grid-clickbox"></a>
+              <a href="#" class="cover-wrapper"></a>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-md-4 col-sm-6 d-flex align-items-stretch mb-5 mb-lg-0">
+          <div class="icon-box">
+            <div
+              style="background-image: url(data:image/png;base64,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);"
+              class="entry-cover image-grid-cover has-image">
+              <a href="{{ url_for('.brand_list', brand_name='Maybelline') }}" class="image-grid-clickbox"></a>
+              <a href="#" class="cover-wrapper"></a>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-md-4 col-sm-6 d-flex align-items-stretch mb-5 mb-lg-0">
+          <div class="icon-box">
+            <div
+              style="background-image: url(https://mir-s3-cdn-cf.behance.net/projects/404/25f106106845371.Y3JvcCwzMzY3LDI2MzMsMCww.png);"
+              class="entry-cover image-grid-cover has-image">
+              <a href="{{ url_for('.brand_list', brand_name='Klairs') }}" class="image-grid-clickbox"></a>
+              <a href="#" class="cover-wrapper"></a>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-md-4 col-sm-6 d-flex align-items-stretch mb-5 mb-lg-0">
+          <div class="icon-box">
+            <div style="background-image: url(https://shopichigo.com/wp-content/uploads/2017/06/Benton-logo.jpg);"
+              class="entry-cover image-grid-cover has-image">
+              <a href="{{ url_for('.brand_list', brand_name='Benton') }}" class="image-grid-clickbox"></a>
+              <a href="#" class="cover-wrapper"></a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  {% endblock %}

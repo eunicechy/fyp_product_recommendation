@@ -1,0 +1,23 @@
+{% extends 'index.html' %}
+{% block page_content %}
+<div class="top-pad">
+  <h3 class="recommended-list-title">{{ title }}</h3>
+  {% for product in products %}
+  <div class="well">
+    <img src={{product.image_url}} width="200" height="100" />
+    <h3>
+      {{ product.product_name}}
+    </h3>
+    <p><i><b>{{ product.brand}}</b></i></p>
+    <p> RM {{ product.price}}0</p>
+    <p> Ratings: {{ product.overall_rating}}/5</p>
+    <div>
+      <a class="btn btn-success" href="{{ url_for('.product', product_name=product.product_name) }}">
+        View Product Details
+      </a>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+{% endblock %}
